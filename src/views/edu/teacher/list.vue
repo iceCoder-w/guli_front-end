@@ -72,7 +72,7 @@
 
       <el-table-column label="操作" width="200" align="center">
         <template slot-scope="scope">
-          <router-link :to="'/edu/teacher/edit/'+scope.row.id">
+          <router-link :to="'/teacher/edit/'+scope.row.id">
             <el-button type="primary" size="mini" icon="el-icon-edit">修改</el-button>
           </router-link>
           <el-button type="danger" size="mini" icon="el-icon-delete" @click="removeDataById(scope.row.id)">删除</el-button>
@@ -95,7 +95,7 @@
 </template>
 <script>
 // 引入调用teacher.js文件
-import teacher from '@/api/edu/teacher'
+import teacherApi from '@/api/edu/teacher'
 
 export default {
   // 定义变量和初始值
@@ -121,7 +121,7 @@ export default {
       // 针对分页单独改造，增加 page = 1，因为elementUI的分页会自动传参page
       this.page = page
       this.listLoading = true
-      teacher.getTeacherListPage(this.page, this.limit, this.searchObj).then(response => {
+      teacherApi.getTeacherListPage(this.page, this.limit, this.searchObj).then(response => {
         // debugger 设置断点调试
         if (response.success === true) {
           this.list = response.data.items
@@ -146,7 +146,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        return teacher.removeById(id)
+        return teacherApi.removeById(id)
       }).then(() => {
         this.fetchData()
         this.$message({
