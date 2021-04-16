@@ -55,16 +55,30 @@ export default {
     }
   },
 
-  created() { // 页面渲染之前执行
-    // 判断路径是否有id值
-    if (this.$route.params && this.$route.params.id) {
-      // 从路径获取id
-      const id = this.$route.params.id
-      this.getInfoById(id)
+  watch: { // 监听，路由发生变化，方法执行
+    $route(to, from) {
+      // console.log('watch $route 路由发生变化')
+      this.init()
     }
   },
 
+  created() {
+    this.init()
+  },
+
   methods: {
+    init() {
+      // 判断路径是否有id值
+      if (this.$route.params && this.$route.params.id) {
+        // 从路径获取id
+        const id = this.$route.params.id
+        this.getInfoById(id)
+      } else {
+        // 清空表单
+        this.resetData()
+      }
+    },
+
     saveOrUpdate() {
       this.saveBtnDisabled = true
       // 判断是修改还是添加
@@ -124,6 +138,11 @@ export default {
             message: '获取数据失败'
           })
         })
+    },
+
+    // 清空
+    resetData() {
+      this.teacher = {}
     }
   }
 }
