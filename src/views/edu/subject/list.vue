@@ -45,9 +45,10 @@ export default {
         })
     },
 
+    // 优化过滤功能，大小写自动转换查询
     filterNode(value, data) {
       if (!value) return true
-      return data.title.indexOf(value) !== -1
+      return data.title.toLowerCase().indexOf(value.toLowerCase()) !== -1
     }
   }
 }
