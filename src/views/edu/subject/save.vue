@@ -69,6 +69,7 @@ export default {
           message: '导入课程分类成功'
         })
         // 跳转课程分类列表
+        this.$router.push({ path: '/subject/list' })
       }
     },
 
