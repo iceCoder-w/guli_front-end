@@ -17,11 +17,23 @@
 
       <!-- 所属分类 TODO -->
       <el-form-item label="课程分类">
+        <!-- 一级分类 -->
         <el-select
           v-model="courseInfo.subjectParentId"
-          placeholder="请选择">
+          placeholder="一级分类"
+          @change="subjectLevelOneChanged"> <!-- @change多选一改变，就会触发 -->
           <el-option
             v-for="subject in subjectOneList"
+            :key="subject.id"
+            :label="subject.title"
+            :value="subject.id"/>
+        </el-select>
+        <!-- 二级分类 -->
+        <el-select
+          v-model="courseInfo.subjectId"
+          placeholder="二级分类">
+          <el-option
+            v-for="subject in subjectTwoList"
             :key="subject.id"
             :label="subject.title"
             :value="subject.id"/>
@@ -73,8 +85,8 @@ export default {
       saveBtnDisabled: false, // 保存按钮是否禁用
       courseInfo: {
         title: '',
-        subjectId: '', // 二级分类
         subjectParentId: '', // 一级分类
+        subjectId: '', // 二级分类
         teacherId: '',
         lessonNum: 0,
         description: '',
@@ -122,6 +134,15 @@ export default {
         .then(response => {
           this.subjectOneList = response.data.list
         })
+    },
+    // 点击某个一级分类，触发change，显示对应的二级分类
+    subjectLevelOneChanged(value) { // value是一级分类的id值（自带，不用在上面的函数里单独指定）
+      for (let i = 0; i < this.subjectOneList.length; i++) {
+        if (this.subjectOneList[i].id === value) {
+          this.subjectTwoList = this.subjectOneList[i].children
+          this.courseInfo.subjectId = '' // 每次选完一级，清空一下二级（多次选择一级时，会有上次遗留的二级内容，不美观）
+        }
+      }
     }
   }
 }
