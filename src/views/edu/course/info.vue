@@ -16,6 +16,17 @@
       </el-form-item>
 
       <!-- 所属分类 TODO -->
+      <el-form-item label="课程分类">
+        <el-select
+          v-model="courseInfo.subjectParentId"
+          placeholder="请选择">
+          <el-option
+            v-for="subject in subjectOneList"
+            :key="subject.id"
+            :label="subject.title"
+            :value="subject.id"/>
+        </el-select>
+      </el-form-item>
 
       <!-- 课程讲师 -->
       <el-form-item label="课程讲师">
@@ -38,6 +49,7 @@
       <el-form-item label="课程简介">
         <el-input v-model="courseInfo.description" placeholder=" 示例：机器学习是一门多领域交叉学科，专门研究计算机怎样模拟或实现人类的学习行为。"/>
       </el-form-item>
+
       <!-- 课程封面 TODO -->
 
       <el-form-item label="课程价格">
@@ -53,6 +65,7 @@
 
 <script>
 import course from '@/api/edu/course'
+import subject from '@/api/edu/subject'
 export default {
   name: 'Info',
   data() {
@@ -60,23 +73,29 @@ export default {
       saveBtnDisabled: false, // 保存按钮是否禁用
       courseInfo: {
         title: '',
-        subjectId: '',
+        subjectId: '', // 二级分类
+        subjectParentId: '', // 一级分类
         teacherId: '',
         lessonNum: 0,
         description: '',
         cover: '',
         price: 0
       }, // 课程基本信息对象，用于数据封装
-      teacherList: [] // 封装所有讲师的数据
+      teacherList: [], // 封装所有讲师的数据
+      subjectOneList: [], // 一级分类
+      subjectTwoList: [] // 二级分类
     }
   },
 
   created() {
     // 初始化所有讲师
     this.getTeacherList()
+    // 初始化所有一级分类
+    this.getOneSubject()
   },
 
   methods: {
+    // 查询所有的讲师
     getTeacherList() {
       course.getListTeacher()
         .then(response => {
@@ -94,6 +113,14 @@ export default {
           })
           // 2.跳转到第二步
           this.$router.push({ path: '/course/chapter/' + response.data.courseId })
+        })
+    },
+
+    // 查询所有课程的一级分类
+    getOneSubject() {
+      subject.getSubjectList()
+        .then(response => {
+          this.subjectOneList = response.data.list
         })
     }
   }
