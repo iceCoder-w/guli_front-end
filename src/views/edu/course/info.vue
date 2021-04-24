@@ -59,7 +59,7 @@
 
       <!-- 课程简介 -->
       <el-form-item label="课程简介">
-        <el-input v-model="courseInfo.description" placeholder=" 示例：机器学习是一门多领域交叉学科，专门研究计算机怎样模拟或实现人类的学习行为。"/>
+        <tinymce :height="300" v-model="courseInfo.description"/>
       </el-form-item>
 
       <!-- 课程封面 -->
@@ -88,8 +88,10 @@
 <script>
 import course from '@/api/edu/course'
 import subject from '@/api/edu/subject'
-export default {
+import Tinymce from '@/components/Tinymce' // 引入富文本编辑器组件
+export default { // 声明组件
   name: 'Info',
+  components: { Tinymce },
   data() {
     return {
       saveBtnDisabled: false, // 保存按钮是否禁用
@@ -178,5 +180,8 @@ export default {
 </script>
 
 <style scoped>
-
+.tinymce-container {
+  /*调整上传图片按钮的高度*/
+  line-height: 29px;
+}
 </style>
