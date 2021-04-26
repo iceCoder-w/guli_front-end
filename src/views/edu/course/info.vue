@@ -120,11 +120,14 @@ export default { // 声明组件
       this.courseId = this.$route.params.id
       // 根据课程id回显信息
       this.getInfo()
+    } else {
+      // 清空表单
+      this.resetData()
+      // 初始化所有讲师
+      this.getTeacherList()
+      // 初始化所有一级分类
+      this.getOneSubject()
     }
-    // 初始化所有讲师
-    this.getTeacherList()
-    // 初始化所有一级分类
-    this.getOneSubject()
   },
 
   methods: {
@@ -189,7 +192,26 @@ export default { // 声明组件
       course.getCourseInfoById(this.courseId)
         .then(response => {
           this.courseInfo = response.data.courseInfoVo
+          // 查询所有的分类信息
+          subject.getSubjectList()
+            .then(response => {
+              this.subjectOneList = response.data.list // 一级分类
+              // 遍历一级
+              for (let i = 0; i < this.subjectOneList.length; i++) {
+                const oneSubject = this.subjectOneList[i]
+                // 比较当前courseInfo中一级分类的id和新查询的所有一级分类的id
+                if (this.courseInfo.subjectParentId === oneSubject.id) {
+                  this.subjectTwoList = oneSubject.children
+                }
+              }
+            })
+          // 初始化所有讲师
+          this.getTeacherList()
         })
+    },
+    // 清空
+    resetData() {
+      this.courseInfo = {}
     }
   }
 }
