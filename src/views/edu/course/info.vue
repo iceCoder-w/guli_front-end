@@ -108,11 +108,19 @@ export default { // 声明组件
       teacherList: [], // 封装所有讲师的数据
       subjectOneList: [], // 一级分类
       subjectTwoList: [], // 二级分类
-      BASE_API: process.env.BASE_API // 接口API地址
+      BASE_API: process.env.BASE_API, // 接口API地址
+      // 回显时使用
+      courseId: ''
     }
   },
 
   created() {
+    // 获取路由id
+    if (this.$route.params && this.$route.params.id) {
+      this.courseId = this.$route.params.id
+      // 根据课程id回显信息
+      this.getInfo()
+    }
     // 初始化所有讲师
     this.getTeacherList()
     // 初始化所有一级分类
@@ -174,6 +182,14 @@ export default { // 声明组件
         this.$message.error('上传头像图片大小不能超过 2MB!')
       }
       return isJPG && isLt2M
+    },
+
+    // 回显部分，根据id查询
+    getInfo() {
+      course.getCourseInfoById(this.courseId)
+        .then(response => {
+          this.courseInfo = response.data.courseInfoVo
+        })
     }
   }
 }
