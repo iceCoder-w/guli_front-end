@@ -122,7 +122,7 @@ export default { // 声明组件
       this.getInfo()
     } else {
       // 清空表单
-      this.resetData()
+      // this.resetData()
       // 初始化所有讲师
       this.getTeacherList()
       // 初始化所有一级分类
@@ -138,8 +138,8 @@ export default { // 声明组件
           this.teacherList = response.data.items
         })
     },
-    // 下一步
-    saveOrUpdate() {
+    // 添加课程
+    addCourse() {
       course.addCourseInfo(this.courseInfo)
         .then(response => {
           // 1.提示
@@ -150,6 +150,30 @@ export default { // 声明组件
           // 2.跳转到第二步
           this.$router.push({ path: '/course/chapter/' + response.data.courseId })
         })
+    },
+    // 修改课程
+    updateCourse() {
+      course.updateCourseInfo(this.courseInfo)
+        .then(response => {
+          // 1.提示
+          this.$message({
+            type: 'success',
+            message: '修改课程信息成功'
+          })
+          // 2.跳转到第二步
+          this.$router.push({ path: '/course/chapter/' + this.courseId })
+        })
+    },
+    // 下一步
+    saveOrUpdate() {
+      // 判断是添加还是修改
+      if (!this.courseId) {
+        // 添加
+        this.addCourse()
+      } else {
+        // 修改
+        this.updateCourse()
+      }
     },
 
     // 查询所有课程的一级分类
