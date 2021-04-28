@@ -27,7 +27,7 @@
     </el-dialog>
 
     <!-- 章节 -->
-    <ul class="chanpterList">
+    <ul class="chapterList">
       <li
         v-for="chapter in chapterVideoList"
         :key="chapter.id">
@@ -36,12 +36,12 @@
           <span class="acts">
             <el-button type="text">添加课时</el-button>
             <el-button style="" type="text" @click="openEditChapter(chapter.id)">编辑</el-button>
-            <el-button type="text">删除</el-button>
+            <el-button type="text" @click="removeChapter(chapter.id)">删除</el-button>
           </span>
         </p>
 
         <!-- 视频 -->
-        <ul class="chanpterList videoList">
+        <ul class="chapterList videoList">
           <li
             v-for="video in chapter.children"
             :key="video.id">
@@ -171,22 +171,51 @@ export default {
           // 刷新页面
           this.getChapterVideo()
         })
+    },
+
+    // 删除章节
+    removeChapter(chapterId) {
+      this.$confirm('此操作将永久删除章节, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        return chapter.deleteChapter(chapterId)
+      }).then(() => {
+        this.getChapterVideo()
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        })
+      }).catch((response) => { // 失败
+        if (response === 'cancel') {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        } else {
+          this.$message({
+            type: 'error',
+            message: '删除失败'
+          })
+        }
+      })
     }
   }
 }
 </script>
 
 <style scoped>
-.chanpterList{
+.chapterList{
   position: relative;
   list-style: none;
   margin: 0;
   padding: 0;
 }
-.chanpterList li{
+.chapterList li{
   position: relative;
 }
-.chanpterList p{
+.chapterList p{
   /*float: left;*/
   font-size: 20px;
   margin: 10px 0;
@@ -196,7 +225,7 @@ export default {
   width: 100%;
   border: 1px solid #DDD;
 }
-.chanpterList .acts {
+.chapterList .acts {
   float: right;
   font-size: 14px;
 }
