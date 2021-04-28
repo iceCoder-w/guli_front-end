@@ -35,7 +35,7 @@
           {{ chapter.title }}
           <span class="acts">
             <el-button type="text">添加课时</el-button>
-            <el-button style="" type="text">编辑</el-button>
+            <el-button style="" type="text" @click="openEditChapter(chapter.id)">编辑</el-button>
             <el-button type="text">删除</el-button>
           </span>
         </p>
@@ -138,7 +138,39 @@ export default {
 
     // 判断是添加还是修改
     saveOrUpdate() {
-      this.addChapter()
+      // 根据有无id判断是添加还是修改
+      if (!this.chapter.id) {
+        this.addChapter()
+      } else {
+        this.updateChapter()
+      }
+    },
+
+    // 弹框修改章节
+    openEditChapter(chapterId) {
+      // 弹框
+      this.dialogChapterFormVisible = true
+      // 数据回显
+      chapter.getChapter(chapterId)
+        .then(response => {
+          this.chapter = response.data.chapter
+        })
+    },
+
+    // 执行修改操作
+    updateChapter() {
+      chapter.updateChapter(this.chapter)
+        .then(response => {
+          // 关闭弹框
+          this.dialogChapterFormVisible = false
+          // 提示信息
+          this.$message({
+            type: 'success',
+            message: '修改章节成功!'
+          })
+          // 刷新页面
+          this.getChapterVideo()
+        })
     }
   }
 }
@@ -155,7 +187,7 @@ export default {
   position: relative;
 }
 .chanpterList p{
-  float: left;
+  /*float: left;*/
   font-size: 20px;
   margin: 10px 0;
   padding: 10px;
@@ -173,7 +205,7 @@ export default {
   padding-left: 50px;
 }
 .videoList p{
-  float: left;
+  /*float: left;*/
   font-size: 14px;
   margin: 10px 0;
   padding: 10px;
