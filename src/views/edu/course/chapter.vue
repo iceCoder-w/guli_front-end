@@ -9,7 +9,7 @@
       <el-step title="最终发布"/>
     </el-steps>
 
-    <el-button type="text" @click="dialogChapterFormVisible=true">添加章节</el-button>
+    <el-button type="text" @click="openChapterDialog">添加章节</el-button>
     <!-- 添加和修改章节表单 -->
     <el-dialog :visible.sync="dialogChapterFormVisible" title="添加章节">
       <el-form :model="chapter" label-width="120px">
@@ -74,7 +74,11 @@ export default {
       saveBtnDisabled: false, // 保存按钮是否禁用
       courseId: '',
       chapterVideoList: [],
-      chapter: {}, // 封装章节数据
+      chapter: {
+        courseId: '',
+        title: '',
+        sort: 0
+      }, // 封装章节数据
       dialogChapterFormVisible: false // 添加和修改章节表单弹框是否显示
     }
   },
@@ -104,6 +108,37 @@ export default {
     next() {
       console.log('next')
       this.$router.push({ path: '/course/publish/' + this.courseId })
+    },
+
+    // 弹出‘添加章节’的框
+    openChapterDialog() {
+      this.dialogChapterFormVisible = true
+      // 清空数据
+      this.chapter.title = ''
+      this.chapter.sort = 0
+    },
+
+    // 添加章节
+    addChapter() {
+      // 设置课程id到chapter对象里
+      this.chapter.courseId = this.courseId
+      chapter.addChapter(this.chapter)
+        .then(response => {
+          // 关闭弹框
+          this.dialogChapterFormVisible = false
+          // 提示信息
+          this.$message({
+            type: 'success',
+            message: '添加章节成功!'
+          })
+          // 刷新页面
+          this.getChapterVideo()
+        })
+    },
+
+    // 判断是添加还是修改
+    saveOrUpdate() {
+      this.addChapter()
     }
   }
 }
