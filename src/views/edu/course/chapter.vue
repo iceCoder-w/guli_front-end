@@ -47,7 +47,7 @@
             :key="video.id">
             <p>{{ video.title }}
               <span class="acts">
-                <el-button type="text">编辑</el-button>
+                <el-button type="text" @click="openEditVideo(video.id)">编辑</el-button>
                 <el-button type="text" @click="removeVideo(video.id)">删除</el-button>
               </span>
             </p>
@@ -73,9 +73,9 @@
           <el-input-number v-model="video.sort" :min="0" controls-position="right"/>
         </el-form-item>
         <el-form-item label="是否免费">
-          <el-radio-group v-model="video.free">
-            <el-radio :label="true">免费</el-radio>
-            <el-radio :label="false">默认</el-radio>
+          <el-radio-group v-model="video.isFree">
+            <el-radio :label="1">免费</el-radio>
+            <el-radio :label="0">默认</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="上传视频">
@@ -108,7 +108,7 @@ export default {
       video: {
         title: '',
         sort: 0,
-        free: 0,
+        isFree: 0,
         videoSourceId: ''
       }, // 封装小节数据
       dialogChapterFormVisible: false, // 添加和修改章节表单弹框是否显示
@@ -240,10 +240,11 @@ export default {
     // 添加小节弹框
     openVideo(chapterId) {
       this.dialogVideoFormVisible = true
-      this.video.title = '' // 重置章节标题
-      this.video.sort = 0 // 重置章节标题
-      this.video.free = 0 // 重置类型
-      this.video.videoSourceId = '' // 重置视频资源id
+      this.video = []
+      // this.video.title = '' // 重置章节标题
+      // this.video.sort = 0 // 重置章节标题
+      // this.video.isFree = 0 // 重置类型
+      // this.video.videoSourceId = '' // 重置视频资源id
       this.video.chapterId = chapterId // 设置章节id
       this.video.courseId = this.courseId // 设置课程id
     },
@@ -295,11 +296,38 @@ export default {
 
     // 修改小节
     updateVideo() {
-
+      video.updateVideo(this.video)
+        .then(response => {
+          // 关闭弹框
+          this.dialogVideoFormVisible = false
+          // 提示信息
+          this.$message({
+            type: 'success',
+            message: '修改小节成功!'
+          })
+          // 刷新页面
+          this.getChapterVideo()
+        })
     },
 
     saveOrUpdateVideo() {
-      this.addVideo()
+      // 根据有无id判断是添加还是修改
+      if (!this.video.id) {
+        this.addVideo()
+      } else {
+        this.updateVideo()
+      }
+    },
+
+    // 弹框修改小节
+    openEditVideo(videoId) {
+      // 弹框
+      this.dialogVideoFormVisible = true
+      // 数据回显
+      video.getVideo(videoId)
+        .then(response => {
+          this.video = response.data.video
+        })
     }
   }
 }

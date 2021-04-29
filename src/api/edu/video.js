@@ -16,24 +16,22 @@ export default {
       url: `/eduservice/video/deleteVideo/${videoId}`,
       method: 'delete'
     })
-  }
-  //
-  // // 根据id查询章节
-  // getChapter(chapterId) {
-  //   return request({
-  //     url: `/eduservice/edu-chapter/getChapterInfo/${chapterId}`,
-  //     method: 'get'
-  //   })
-  // },
-  //
-  // // 修改章节
-  // updateChapter(chapter) {
-  //   return request({
-  //     url: `/eduservice/edu-chapter/updateChapter`,
-  //     method: 'post',
-  //     data: chapter
-  //   })
-  // },
-  //
+  },
 
+  // 根据id查询章节
+  getVideo(videoId) {
+    return request({
+      url: `/eduservice/video/getVideoInfo/${videoId}`,
+      method: 'get'
+    })
+  },
+
+  // 修改章节
+  updateVideo(video) {
+    return request({
+      url: `/eduservice/video/updateVideo`,
+      method: 'post',
+      data: video
+    })
+  }
 }
