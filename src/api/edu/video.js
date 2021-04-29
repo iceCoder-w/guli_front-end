@@ -8,6 +8,14 @@ export default {
       method: 'post',
       data: video
     })
+  },
+
+  // 根据id删除小节
+  deleteVideo(videoId) {
+    return request({
+      url: `/eduservice/video/deleteVideo/${videoId}`,
+      method: 'delete'
+    })
   }
   //
   // // 根据id查询章节
