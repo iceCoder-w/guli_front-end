@@ -47,5 +47,14 @@ export default {
       url: `/eduservice/course/publishCourse/${courseId}`,
       method: 'post'
     })
+  },
+
+  // 按条件分页查询
+  getPageList(page, limit, searchObj) {
+    return request({
+      url: `/eduservice/course/pageCourseCondition/${page}/${limit}`,
+      method: 'get',
+      params: searchObj
+    })
   }
 }

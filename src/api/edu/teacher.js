@@ -9,6 +9,13 @@ export default {
       data: teacherQuery
     })
   },
+  // 所有讲师列表
+  getAllTeacher() {
+    return request({
+      url: `/eduservice/edu-teacher/findAll`,
+      method: 'get'
+    })
+  },
   removeById(id) {
     return request({
       url: `/eduservice/edu-teacher/deleteByID/${id}`,
