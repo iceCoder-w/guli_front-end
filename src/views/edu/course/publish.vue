@@ -56,8 +56,15 @@ export default {
     },
 
     publish() {
-      console.log('publish')
-      this.$router.push({ path: '/course/list' })
+      course.publishCourse(this.courseId)
+        .then(response => {
+          // 提示发布成功
+          this.$message({
+            type: 'success',
+            message: '发布成功!'
+          })
+          this.$router.push({ path: '/course/list' })
+        })
     },
 
     // 获取课程综合信息
