@@ -56,5 +56,13 @@ export default {
       method: 'get',
       params: searchObj
     })
+  },
+
+  // 删除课程
+  removeById(id) {
+    return request({
+      url: `/eduservice/course/removeById/${id}`,
+      method: 'delete'
+    })
   }
 }

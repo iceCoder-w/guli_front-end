@@ -118,7 +118,7 @@
           <router-link :to="'/course/chapter/'+scope.row.id">
             <el-button type="text" size="mini" icon="el-icon-edit">编辑课程大纲</el-button>
           </router-link>
-          <el-button type="text" size="mini" icon="el-icon-delete">删除</el-button>
+          <el-button type="text" size="mini" icon="el-icon-delete" @click="removeDataById(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
 
@@ -211,6 +211,30 @@ export default {
       this.searchObj = {}
       this.subSubjectList = [] // 二级分类列表
       this.fetchData()
+    },
+
+    // 删除课程（包括描述、章节、小节）
+    removeDataById(id) {
+      this.$confirm('此操作将永久删除该课程，以及该课程下的章节和视频，是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        return course.removeById(id)
+      }).then(() => {
+        this.fetchData()
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        })
+      }).catch((response) => { // 失败
+        if (response === 'cancel') {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        }
+      })
     }
   }
 }

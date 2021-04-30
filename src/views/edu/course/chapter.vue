@@ -240,7 +240,7 @@ export default {
     // 添加小节弹框
     openVideo(chapterId) {
       this.dialogVideoFormVisible = true
-      this.video = []
+      this.video = {}
       // this.video.title = '' // 重置章节标题
       // this.video.sort = 0 // 重置章节标题
       // this.video.isFree = 0 // 重置类型
