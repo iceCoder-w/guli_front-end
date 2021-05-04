@@ -348,6 +348,8 @@ export default {
       video.getVideo(videoId)
         .then(response => {
           this.video = response.data.video
+          // 编辑小节弹框中的视频名称及删除按钮的显示
+          this.fileList = [{ 'name': this.video.videoOriginalName }]
         })
     },
 
