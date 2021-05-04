@@ -262,6 +262,7 @@ export default {
     openVideo(chapterId) {
       this.dialogVideoFormVisible = true
       this.video = {}
+      this.fileList = [] // 清空文件列表
       // this.video.title = '' // 重置章节标题
       // this.video.sort = 0 // 重置章节标题
       // this.video.isFree = 0 // 重置类型
