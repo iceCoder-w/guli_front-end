@@ -351,6 +351,7 @@ export default {
         })
     },
 
+    // -----------------------------------视频操作-----------------------------------
     // 上传视频成功调用的方法
     handleVodUploadSuccess(response, file, fileList) {
       this.video.videoSourceId = response.data.videoId
@@ -359,6 +360,25 @@ export default {
     // 上传视频之前调用的方法
     handleUploadExceed() {
       this.$message.warning('想要重新上传视频，请先删除已上传的视频')
+    },
+    // 删除前的弹框提醒
+    beforeVodRemove(file, fileList) {
+      return this.$confirm(`确定删除 ${file.name}？`)
+    },
+    // 点击确实删除
+    handleVodRemove() {
+      video.deleteAliyunVod(this.video.videoSourceId)
+        .then(response => {
+          this.$message({
+            type: 'success',
+            message: response.message
+          })
+          // 清空文件列表
+          this.fileList = []
+          // 清空视频id和名称
+          this.video.videoSourceId = ''
+          this.video.videoOriginalName = ''
+        })
     }
   }
 }
