@@ -61,7 +61,7 @@
 
       <el-table-column label="操作" width="200" align="center">
         <template slot-scope="scope">
-          <router-link :to="'/report/edit/'+scope.row.id">
+          <router-link :to="'/report/info/'+scope.row.id">
             <el-button type="primary" size="mini" icon="el-icon-edit">修改</el-button>
           </router-link>
           <el-button type="danger" size="mini" icon="el-icon-delete" @click="removeReportById(scope.row.id)">删除</el-button>
@@ -83,8 +83,6 @@
   </div>
 </template>
 <script>
-// 引入调用teacher.js文件
-import teacherApi from '@/api/edu/teacher'
 import reportApi from '@/api/edu/report'
 
 export default {
@@ -96,7 +94,7 @@ export default {
       total: 0, // 总记录数
       page: 1, // 页码
       limit: 5, // 每页记录数
-      searchObj: {}// 查询条件
+      searchObj: {} // 查询条件
     }
   },
 
@@ -125,16 +123,14 @@ export default {
       this.fetchData()
     },
 
-    // 删除讲师
+    // 删除周报
     removeReportById(id) {
-      // debugger
-      // console.log(memberId)
       this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        return teacherApi.removeById(id)
+        return reportApi.removeReportById(id)
       }).then(() => {
         this.fetchData()
         this.$message({

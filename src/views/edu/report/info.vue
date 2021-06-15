@@ -18,15 +18,14 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button type="primary" @click="submitReport">提交</el-button>
+        <el-button type="primary" @click="saveOrUpdate">提交</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script>
-import report from '@/api/edu/report'
-// import subject from '@/api/edu/subject'
+import reportApi from '@/api/edu/report'
 import Tinymce from '@/components/Tinymce' // 引入富文本编辑器组件
 export default { // 声明组件
   name: 'Info',
@@ -39,29 +38,39 @@ export default { // 声明组件
       },
       BASE_API: process.env.BASE_API, // 接口API地址
       // 回显时使用
-      courseId: ''
+      reportId: ''
     }
   },
 
-  // created() {
-  //   // 获取路由id
-  //   if (this.$route.params && this.$route.params.id) {
-  //     this.courseId = this.$route.params.id
-  //     // 根据课程id回显信息
-  //     this.getInfo()
-  //   } else {
-  //     // 清空表单
-  //     // this.resetData()
-  //     // 初始化所有讲师
-  //     this.getTeacherList()
-  //     // 初始化所有一级分类
-  //     this.getOneSubject()
-  //   }
-  // },
+  created() {
+    // 获取路由id
+    if (this.$route.params && this.$route.params.id) {
+      this.reportId = this.$route.params.id
+      // 根据课程id回显信息
+      this.getReportInfo()
+    } else {
+      // 清空表单
+      // this.resetData()
+      // this.fetchData()
+    }
+  },
 
   methods: {
+
+    saveOrUpdate() {
+      // 判断是添加还是修改
+      if (!this.reportId) {
+        // 添加
+        this.submitReport()
+      } else {
+        // 修改
+        this.updateReport()
+      }
+    },
+
+    // 提交
     submitReport() {
-      report.addReportInfo(this.reportInfo)
+      reportApi.addReportInfo(this.reportInfo)
         .then(response => {
           // 提示发布成功
           this.$message({
@@ -69,6 +78,27 @@ export default { // 声明组件
             message: '提交成功!'
           })
           this.$router.push({ path: '/report/mylist' })
+        })
+    },
+
+    // 修改
+    updateReport() {
+      reportApi.updateReport(this.reportId, this.reportInfo)
+        .then(response => {
+          // 提示发布成功
+          this.$message({
+            type: 'success',
+            message: '修改成功!'
+          })
+          this.$router.push({ path: '/report/mylist' })
+        })
+    },
+
+    // 数据回显
+    getReportInfo() {
+      reportApi.getReportInfoById(this.reportId)
+        .then(response => {
+          this.reportInfo = response.data.report
         })
     }
 

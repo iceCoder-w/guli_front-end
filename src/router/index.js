@@ -152,6 +152,13 @@ export const constantRouterMap = [
         meta: { title: '添加周报', icon: 'tree' }
       },
       {
+        path: 'info/:id',
+        name: '修改周报',
+        component: () => import('@/views/edu/report/info'),
+        meta: { title: '修改周报', noCache: true },
+        hidden: true
+      },
+      {
         path: 'mylist',
         name: '我的周报列表',
         component: () => import('@/views/edu/report/mylist'),

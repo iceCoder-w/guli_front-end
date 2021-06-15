@@ -28,6 +28,23 @@ export default {
     })
   },
 
+  // 根据课程id查询课程基本信息
+  getReportInfoById(id) {
+    return request({
+      url: `/eduservice/edu-report/getReport/${id}`,
+      method: 'get'
+    })
+  },
+
+  // 修改周报内容
+  updateReport(id, reportInfo) {
+    return request({
+      url: `/eduservice/edu-report/updateReport/${id}`,
+      method: 'post',
+      data: reportInfo
+    })
+  },
+
   // 添加课程信息
   addCourseInfo(courseInfo) {
     return request({
