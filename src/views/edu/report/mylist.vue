@@ -1,9 +1,19 @@
 <template>
   <div class="app-container">
+
+    <!--写周报-->
+    <el-form>
+      <el-form-item>
+        <router-link :to="'/report/info/'">
+          <el-button type="primary" icon="el-icon-edit">写周报</el-button>
+        </router-link>
+      </el-form-item>
+    </el-form>
+
     <!--查询表单-->
     <el-form :inline="true" class="demo-form-inline">
-      <el-form-item>
-        <el-input v-model="searchObj.name" placeholder="用户名"/>
+      <el-form-item label="标题">
+        <el-input v-model="searchObj.title" placeholder="请输入要查找的标题"/>
       </el-form-item>
 
       <el-form-item label="添加时间">
@@ -26,7 +36,7 @@
       </el-form-item>
 
       <el-button type="primary" icon="el-icon-search" @click="fetchData()">查询</el-button>
-      <el-button type="default" @click="resetData()">清空</el-button>
+      <el-button type="default" icon="el-icon-share" @click="resetData()">清空</el-button>
     </el-form>
 
     <!-- 表格 -->
@@ -47,20 +57,21 @@
           {{ (page - 1) * limit + scope.$index + 1 }}
         </template>
       </el-table-column>
-      <el-table-column prop="id" label="周报id" width="100" />
-      <el-table-column prop="userName" label="用户名" width="100" />
-      <el-table-column prop="title" label="标题" width="80" />
-      <el-table-column prop="result" label="结果" width="80" />
-      <el-table-column type="String" prop="description" label="详细内容" >
-        <template slot-scope="scope">
-          <p v-html="scope.row.description"/>
-        </template>
-      </el-table-column>
+      <!--      <el-table-column prop="id" label="周报id" width="100" />-->
+      <el-table-column prop="title" label="标题" width="189" />
+      <el-table-column prop="userName" label="提交人" width="100" />
+      <el-table-column prop="result" label="结果" width="300" />
+      <!--      <el-table-column type="String" prop="description" label="详细内容" >-->
+      <!--        <template slot-scope="scope">-->
+      <!--          <p v-html="scope.row.description"/>-->
+      <!--        </template>-->
+      <!--      </el-table-column>-->
 
       <el-table-column prop="gmtCreate" label="添加时间" width="160"/>
 
-      <el-table-column label="操作" width="200" align="center">
+      <el-table-column label="操作" width="400" align="center">
         <template slot-scope="scope">
+          <el-button type="info" size="mini" icon="el-icon-view" @click="showDetail(scope.$index)">查看详细内容</el-button>
           <router-link :to="'/report/info/'+scope.row.id">
             <el-button type="primary" size="mini" icon="el-icon-edit">修改</el-button>
           </router-link>
@@ -76,6 +87,7 @@
       :page-size="limit"
       :total="total"
       style="padding: 30px 0; text-align: center;"
+      background
       layout="total, prev, pager, next, jumper"
       @current-change="fetchData"
     /><!--每次点击按钮自动调方法，会传参page，在下面方法里改造-->
@@ -121,6 +133,14 @@ export default {
     resetData() {
       this.searchObj = {}
       this.fetchData()
+    },
+
+    // 查看详情
+    showDetail(index) {
+      console.log(index)
+      this.$alert(this.list[index].description, '详细内容', {
+        dangerouslyUseHTMLString: true
+      })
     },
 
     // 删除周报

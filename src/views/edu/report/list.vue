@@ -47,10 +47,10 @@
           {{ (page - 1) * limit + scope.$index + 1 }}
         </template>
       </el-table-column>
-
-      <el-table-column prop="userName" label="用户名" width="100" />
+      <el-table-column prop="id" label="周报id" width="100" />
       <el-table-column prop="title" label="标题" width="80" />
-      <el-table-column prop="result" label="结果" width="80" />
+      <el-table-column prop="userName" label="提交人" width="100" />
+      <el-table-column prop="result" label="结果" width="150" />
       <el-table-column type="String" prop="description" label="详细内容" >
         <template slot-scope="scope">
           <p v-html="scope.row.description"/>
@@ -59,12 +59,13 @@
 
       <el-table-column prop="gmtCreate" label="添加时间" width="160"/>
 
-      <el-table-column label="操作" width="200" align="center">
+      <el-table-column label="操作" width="400" align="center">
         <template slot-scope="scope">
-          <router-link :to="'/teacher/edit/'+scope.row.id">
+          <el-button type="info" size="mini" icon="el-icon-view" @click="showDetail(scope.$index)">查看详细内容</el-button>
+          <router-link :to="'/report/info/'+scope.row.id">
             <el-button type="primary" size="mini" icon="el-icon-edit">修改</el-button>
           </router-link>
-          <el-button type="danger" size="mini" icon="el-icon-delete" @click="removeDataById(scope.row.id)">删除</el-button>
+          <el-button type="danger" size="mini" icon="el-icon-delete" @click="removeReportById(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
 
@@ -76,6 +77,7 @@
       :page-size="limit"
       :total="total"
       style="padding: 30px 0; text-align: center;"
+      background
       layout="total, prev, pager, next, jumper"
       @current-change="fetchData"
     /><!--每次点击按钮自动调方法，会传参page，在下面方法里改造-->
@@ -83,8 +85,6 @@
   </div>
 </template>
 <script>
-// 引入调用teacher.js文件
-import teacherApi from '@/api/edu/teacher'
 import reportApi from '@/api/edu/report'
 
 export default {
@@ -96,7 +96,7 @@ export default {
       total: 0, // 总记录数
       page: 1, // 页码
       limit: 5, // 每页记录数
-      searchObj: {}// 查询条件
+      searchObj: {} // 查询条件
     }
   },
 
@@ -125,16 +125,22 @@ export default {
       this.fetchData()
     },
 
-    // 删除讲师
-    removeDataById(id) {
-      // debugger
-      // console.log(memberId)
+    // 查看详情
+    showDetail(index) {
+      console.log(index)
+      this.$alert(this.list[index].description, '详细内容', {
+        dangerouslyUseHTMLString: true
+      })
+    },
+
+    // 删除周报
+    removeReportById(id) {
       this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        return teacherApi.removeById(id)
+        return reportApi.removeReportById(id)
       }).then(() => {
         this.fetchData()
         this.$message({

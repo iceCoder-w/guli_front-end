@@ -19,6 +19,7 @@
 
       <el-form-item>
         <el-button type="primary" @click="saveOrUpdate">提交</el-button>
+        <el-button @click="cancel">取消</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -100,6 +101,11 @@ export default { // 声明组件
         .then(response => {
           this.reportInfo = response.data.report
         })
+    },
+
+    // 取消提交
+    cancel() {
+      this.$router.back()
     }
 
     // // 查询所有的讲师
