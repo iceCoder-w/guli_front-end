@@ -27,20 +27,27 @@
 
 <script>
 import reportApi from '@/api/edu/report'
-import Tinymce from '@/components/Tinymce' // 引入富文本编辑器组件
+import Tinymce from '@/components/Tinymce'
+import { mapGetters } from '_vuex@3.0.1@vuex' // 引入富文本编辑器组件
 export default { // 声明组件
   name: 'Info',
   components: { Tinymce },
   data() {
     return {
       reportInfo: {
-        userId: 'admin',
-        userName: '管理员'
+        userId: '普通用户',
+        userName: this.$store.state.user.name
       },
       BASE_API: process.env.BASE_API, // 接口API地址
       // 回显时使用
       reportId: ''
     }
+  },
+
+  computed: {
+    ...mapGetters([
+      'name'
+    ])
   },
 
   created() {

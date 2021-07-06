@@ -1,10 +1,10 @@
 <template>
   <div class="app-container">
-
     <!--写周报-->
     <el-form>
       <el-form-item>
         <router-link :to="'/report/info/'">
+          <el-button type="text">你好{{ name }}，快来写一条新的周报吧！</el-button>
           <el-button type="primary" icon="el-icon-edit">写周报</el-button>
         </router-link>
       </el-form-item>
@@ -95,6 +95,7 @@
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 import reportApi from '@/api/edu/report'
 
 export default {
@@ -106,8 +107,16 @@ export default {
       total: 0, // 总记录数
       page: 1, // 页码
       limit: 5, // 每页记录数
-      searchObj: {} // 查询条件
+      searchObj: {
+        name: this.$store.state.user.name
+      } // 查询条件
     }
+  },
+
+  computed: {
+    ...mapGetters([
+      'name'
+    ])
   },
 
   // 页面渲染之前执行，一般是调用methods定义的方法

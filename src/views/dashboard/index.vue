@@ -1,7 +1,16 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">用户名:{{ name }}</div>
-    <div class="dashboard-text">用户角色:<span v-for="role in roles" :key="role">{{ role }}</span></div>
+    <el-card class="box-card" style="width: 400px">
+      <div slot="header" class="clearfix">
+        <span>至诚周报管理系统</span>
+        <br>
+        <router-link :to="'/report/info/'">
+          <el-button type="text">写一篇周报</el-button>
+        </router-link>
+      </div>
+      <div class="dashboard-text">用户名:{{ name }}</div>
+      <div class="dashboard-text">用户角色:<span v-for="role in roles" :key="role">{{ role }}</span></div>
+    </el-card>
   </div>
 </template>
 
