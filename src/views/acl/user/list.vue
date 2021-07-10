@@ -114,7 +114,6 @@ export default {
 
     // 加载讲师列表数据
     fetchData(page = 1) {
-      console.log('翻页。。。' + page)
       // 异步获取远程数据（ajax）
       this.page = page
 
@@ -122,7 +121,6 @@ export default {
         response => {
           this.list = response.data.items
           this.total = response.data.total
-
           // 数据加载并绑定成功
           this.listLoading = false
         }
@@ -164,15 +162,11 @@ export default {
 
     // 当表格复选框选项发生变化的时候触发
     handleSelectionChange(selection) {
-      console.log('handleSelectionChange......')
-      console.log(selection)
       this.multipleSelection = selection
     },
 
     // 批量删除
     removeRows() {
-      console.log('removeRows......')
-
       if (this.multipleSelection.length === 0) {
         this.$message({
           type: 'warning',
@@ -217,11 +211,6 @@ export default {
     querySearch(queryString, cb) {
       console.log(queryString)
       console.log(cb)
-
-      // teacher.selectNameByKey(queryString).then(response => {
-      //   // 调用 callback 返回建议列表的数据
-      //   cb(response.data.items)
-      // })
     }
   }
 }

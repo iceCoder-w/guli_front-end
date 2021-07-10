@@ -66,10 +66,8 @@ export default {
   },
 
   methods: {
-
     // 表单初始化
     init() {
-      debugger
       if (this.$route.params && this.$route.params.id) {
         const id = this.$route.params.id
         this.fetchDataById(id)
@@ -92,7 +90,7 @@ export default {
       })
     },
 
-    // 新增讲师
+    // 新增
     saveData() {
       userApi.save(this.user).then(response => {
         // debugger
@@ -125,6 +123,7 @@ export default {
       userApi.getById(id).then(response => {
         debugger
         this.user = response.data.item
+        console.log(response.data)
       })
     }
 

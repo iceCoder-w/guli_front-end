@@ -5,8 +5,11 @@
       <el-form-item>
         <el-input v-model="searchObj.name" placeholder="用户名"/>
       </el-form-item>
+      <el-form-item>
+        <el-input v-model="searchObj.title" placeholder="标题"/>
+      </el-form-item>
 
-      <el-form-item label="添加时间">
+      <el-form-item label="时间范围">
         <el-date-picker
           v-model="searchObj.begin"
           type="datetime"

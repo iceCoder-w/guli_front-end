@@ -5,6 +5,7 @@ const user = {
   state: {
     token: getToken(),
     name: '',
+    nick_name: '',
     avatar: '',
     buttons: [],
     roles: []
@@ -16,6 +17,9 @@ const user = {
     },
     SET_NAME: (state, name) => {
       state.name = name
+    },
+    SET_NICK: (state, nick) => {
+      state.nick_name = nick
     },
     SET_AVATAR: (state, avatar) => {
       state.avatar = avatar
@@ -35,6 +39,7 @@ const user = {
       return new Promise((resolve, reject) => {
         login(username, userInfo.password).then(response => {
           const data = response.data
+          console.log(data)
           setToken(data.token)
           commit('SET_TOKEN', data.token)
           resolve()
@@ -67,8 +72,9 @@ const user = {
           data.permissionValueList.forEach(button => {
             buttonAuthList.push(button)
           })
-
+          console.log(data.avatar)
           commit('SET_NAME', data.name)
+          commit('SET_NICK', data.nick_name)
           commit('SET_AVATAR', data.avatar)
           commit('SET_BUTTONS', buttonAuthList)
           resolve(response)

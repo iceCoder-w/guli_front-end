@@ -29,9 +29,24 @@
         </el-button>
       </el-form-item>
       <div class="tips">
-        <span style="margin-right:20px;">username: admin</span>
-        <span> password: 111111</span>
+        <span style="margin-right:20px;">超级管理员: admin</span>
       </div>
+      <div class="tips">
+        <span style="margin-right:20px;">普通管理员: 000</span>
+      </div>
+      <div class="tips">
+        <span style="margin-right:20px;">老师: 111</span>
+      </div>
+      <div class="tips">
+        <span style="margin-right:20px;">学生1: 222</span>
+      </div>
+      <div class="tips">
+        <span style="margin-right:20px;">学生2: 333</span>
+      </div>
+      <div class="tips">
+        <span> 以上账户默认密码均为: 111111</span>
+      </div>
+
     </el-form>
   </div>
 </template>
@@ -67,7 +82,7 @@ export default {
       },
       loading: false,
       pwdType: 'password',
-      redirect: undefined
+      redirect: '/dashboard'
     }
   },
   watch: {
@@ -89,16 +104,15 @@ export default {
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          // debugger
           this.loading = true
           this.$store.dispatch('Login', this.loginForm).then(() => {
             this.loading = false
-            this.$router.push({ path: this.redirect || '/dashboard' })
+            this.$router.push({ path: this.redirect || '/404' })
           }).catch(() => {
             this.loading = false
           })
         } else {
-          console.log('error submit!!')
+          console.log('错误提交!')
           return false
         }
       })
@@ -162,7 +176,7 @@ $light_gray:#eee;
   .tips {
     font-size: 14px;
     color: #fff;
-    margin-bottom: 10px;
+    margin: 10px auto;
     span {
       &:first-of-type {
         margin-right: 16px;

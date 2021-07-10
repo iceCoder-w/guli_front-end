@@ -14,8 +14,6 @@
 
 import userApi from '@/api/acl/user'
 
-// const cityOptions = ['上海', '北京', '广州', '深圳'];
-
 export default {
   data() {
     return {

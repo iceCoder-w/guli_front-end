@@ -9,6 +9,7 @@
         </router-link>
       </div>
       <div class="dashboard-text">用户名:{{ name }}</div>
+      <!--      <div class="dashboard-text">用户昵称:{{ nick }}</div>-->
       <div class="dashboard-text">用户角色:<span v-for="role in roles" :key="role">{{ role }}</span></div>
     </el-card>
   </div>
@@ -22,7 +23,8 @@ export default {
   computed: {
     ...mapGetters([
       'name',
-      'roles'
+      'roles',
+      'nick'
     ])
   }
 }
