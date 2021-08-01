@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function login(username, password) {
   return request({
-    url: '/eduservice/user/login',
+    url: '/paperservice/hello/login',
     method: 'post',
     data: {
       username,
@@ -13,7 +13,7 @@ export function login(username, password) {
 
 export function getInfo(token) {
   return request({
-    url: '/eduservice/user/info',
+    url: '/paperservice/hello/info',
     method: 'get',
     params: { token }
   })
@@ -21,7 +21,7 @@ export function getInfo(token) {
 
 export function logout() {
   return request({
-    url: '/eduservice/user/logout',
+    url: '/paperservice/hello/logout',
     method: 'post'
   })
 }
