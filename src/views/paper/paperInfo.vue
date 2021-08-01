@@ -4,36 +4,38 @@
     <el-button @click="getPaperInfo(paperId)">获取</el-button>
 
     <div>
-      <h4>题    目：{{ baseinfo.title }}</h4>
-      <h4>姓    名：{{ baseinfo.name }}</h4>
-      <h4>学    号：{{ baseinfo.no }}</h4>
-      <h4>系    别：{{ baseinfo.department }}</h4>
-      <h4>专    业：{{ baseinfo.major }}</h4>
-      <h4>年    级：{{ baseinfo.grade }}</h4>
-      <h4>指导教师：{{ baseinfo.teacher }}</h4>
+      <h4>题    目：{{ baseInfo.title }}</h4>
+      <h4>姓    名：{{ baseInfo.name }}</h4>
+      <h4>学    号：{{ baseInfo.no }}</h4>
+      <h4>系    别：{{ baseInfo.department }}</h4>
+      <h4>专    业：{{ baseInfo.major }}</h4>
+      <h4>年    级：{{ baseInfo.grade }}</h4>
+      <h4>指导教师：{{ baseInfo.teacher }}</h4>
     </div>
-    <br>
+    <br><br>
 
 
-    <h2>{{ baseinfo.title }}</h2>
+    <h2>{{ baseInfo.title }}</h2>
     <h4>摘要</h4>
     <div v-for="ch in chn_abstracts">
       &nbsp;&nbsp;&nbsp;&nbsp;{{ ch.content }}<br>
     </div>
-    <h4>关键词：{{ baseinfo.chnKeywords }}</h4>
-    <br>
+    <h4>关键词：{{ baseInfo.chnKeywords }}</h4>
+    <br><br>
 
-    <h2>{{ baseinfo.engTitle }}</h2>
+
+    <h2>{{ baseInfo.engTitle }}</h2>
     <h4>Abstract</h4>
     <div v-for="en in eng_abstracts">
       &nbsp;&nbsp;&nbsp;&nbsp;{{ en.content }}<br>
     </div>
-    <h4>Key Words:{{ baseinfo.engKeywords }}</h4>
+    <h4>Key Words:{{ baseInfo.engKeywords }}</h4>
     <br><br>
+
 
     <!--六个章节-->
     <div v-for="ch in chapters">
-      <br><h1>{{ch.section.title}}</h1>
+      <br><br><h1>{{ch.section.title}}</h1>
       <!---->
       <div v-for="child in ch.children">
 
@@ -90,9 +92,16 @@
             <div v-else>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               {{child.section.content}}
-              <span style="color: orange;font-size: 10px">
-                段落-{{child.section.type}}
-              </span>
+              <div v-if="child.section.type==='表图文字'" style="display: inline-block">
+                <span style="color: orangered;font-size: 10px">
+                  图表-{{child.section.type}}
+                </span>
+              </div>
+              <div v-else style="display: inline-block">
+                <span style="color: orange;font-size: 10px">
+                  段落-{{child.section.type}}
+                </span>
+              </div>
             </div>
           </div>
 
@@ -133,7 +142,7 @@ export default { // 声明组件
     return {
       paperId:'',
       paper: [],
-      baseinfo: [],
+      baseInfo: [],
       chn_abstracts: [],
       eng_abstracts: [],
       chapters: []
@@ -141,7 +150,7 @@ export default { // 声明组件
   },
 
   created() {
-    this.getPaperInfo('1421519695252557826')
+    this.getPaperInfo('1421727364794068994')
   },
 
   methods: {
@@ -150,9 +159,9 @@ export default { // 声明组件
       paper.getPaperById(id)
         .then(response => {
           this.paper = response.data.paper
-          this.baseinfo = response.data.paper.baseinfo.baseinfo
-          this.chn_abstracts = response.data.paper.baseinfo.chn_abstract
-          this.eng_abstracts = response.data.paper.baseinfo.eng_abstract
+          this.baseInfo = response.data.paper.baseInfo
+          this.chn_abstracts = response.data.paper.chn_abstract
+          this.eng_abstracts = response.data.paper.eng_abstract
           this.chapters = response.data.paper.chap.children
         })
       console.log(this.paper)
